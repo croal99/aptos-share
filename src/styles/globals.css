@@ -1,0 +1,53 @@
+
+.radix-themes {
+  /*background: url(@images/background.svg) no-repeat center;*/
+  background-size: cover;
+  height: 100vh;
+  /*color: #000000;*/
+}
+
+.rt-BaseDialogContent {
+  /*background: var(--gray-a8);*/
+  background: #ffffff;
+  color: #000000;
+}
+
+.login-container {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100%;
+  margin: auto;
+}
+
+.login-form {
+  width: 450px;
+  /*background-color: white;*/
+  background: var(--gray-a4);
+  /*background: color(display-p3 1 0.77 0.26);*/
+}
+
+.game-icon{
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /*margin:50px auto;*/
+}
+
+.preview-container {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  width: 100%;
+  margin: auto;
+}
+
+.preview-form {
+  width: 450px;
+  /*background-color: white;*/
+  background: var(--gray-a1);
+}
