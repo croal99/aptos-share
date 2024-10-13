@@ -6,6 +6,8 @@ Aptos Share app can not only provide Walrus-based distributed storage, but also 
 
 This ensures that the original file owner can gain benefits from file sharing.
 
+[Demo Web Site](https://github.com/croal99/aptos-share)
+
 ## Login with wallet
 
 You need to use a wallet to log in to the system. Please select the wallet application you usually use.
@@ -81,3 +83,8 @@ When the user visits the URL you provided, the user needs to connect to his wall
 
 After the payment is successful, he can view the pictures you shared.
 
+[Demo Web Site](https://github.com/croal99/aptos-share)
+
+Email: bc443995@gmail.com
+
+Donate to Sui Wallet Address: 0x6f25929f026483a440f5f16e03661087eb41604528050b989f48624b049c4b78
