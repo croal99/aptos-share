@@ -152,10 +152,7 @@ export default function UploadFile(
                 id: "",
                 name: file.name,
                 parentId: root.id,
-                item: {
-                    handle: "",
-                    id: 0,
-                },
+                handle: "",
                 blobId: blobId,
                 mediaType: file.type,
                 icon: "",

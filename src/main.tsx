@@ -10,6 +10,7 @@ import View, {loader as viewLoader} from "@/components/view/view.tsx";
 
 import "@radix-ui/themes/styles.css";
 import "@aptos-labs/wallet-adapter-ant-design/dist/index.css";
+import "@/index.css";
 
 const router = createHashRouter([
         {
@@ -37,9 +38,6 @@ const wallets = [new PetraWallet()];
 ReactDOM.createRoot(document.getElementById("root")!).render(
     // <React.StrictMode>
     <Theme
-        // appearance="light"
-        // accentColor="grass"
-        // grayColor="gray"
         appearance="light"
         accentColor="amber"
         panelBackground="solid"

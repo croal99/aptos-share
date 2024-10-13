@@ -1,22 +1,19 @@
-import {FileOnChain, IFileInfoOnChain, IStoreOnChain} from "@/types/FileOnChain.ts";
-import {Aptos, AptosConfig} from "@aptos-labs/ts-sdk";
+import {IFileInfoOnChain, IStoreOnChain} from "@/types/FileOnChain.ts";
+import {Aptos, APTOS_COIN, AptosConfig} from "@aptos-labs/ts-sdk";
 import {InputTransactionData, useWallet} from "@aptos-labs/wallet-adapter-react";
 
 // Setup the client
 const config = new AptosConfig({network: "devnet"});
 const aptos = new Aptos(config);
 
-export const useShareMange = () => {
+export const useShareManage = () => {
     const {account, signAndSubmitTransaction} = useWallet();
 
-    const COIN_AMOUNT = 1_00_000_000;
+    const COIN_AMOUNT = 100_000_000;
 
     // 配置信息
     const env = import.meta.env;
-    const MARKET_PACKAGE_ID = env.VITE_MARKET_PACKAGE_ID;       // 合约
-    const PLAYGROUND_ID = env.VITE_PLAYGROUND_ID;
-    const SUI_NETWORK = env.VITE_PUBLIC_SUI_NETWORK;
-    const MANAGE_ADDRESS = "0xdcab9a56a3add162ccb00f76d5fc7620fbd6d5f59922c0657398f1b7e5303a0f";
+    const MANAGE_ADDRESS = env.VITE_MODULE_ADDRESS;
 
     const handleGetManger = async () => {
         if (!account) return false;
@@ -48,13 +45,11 @@ export const useShareMange = () => {
             // sign and submit transaction to chain
             const response = await signAndSubmitTransaction(transaction);
             // wait for transaction
-            const res = await aptos.waitForTransaction({transactionHash: response.hash});
-            console.log('res', res);
+             await aptos.waitForTransaction({transactionHash: response.hash});
         } catch (error) {
             console.log(error);
         }
 
-        return 'fileObjectID';
     }
 
     const handleAddFile = async (
@@ -96,20 +91,36 @@ export const useShareMange = () => {
         }
     }
 
-    const handleGetShareFileObject = async (handle: string, id: number) => {
+    const handleGetShareFileObject = async (handle: string, blobId: string) => {
+        // console.log('handleGetShareFileObject', MANAGE_ADDRESS, handle.substring(0,2), blobId);
+        if (handle.substring(0,2) != '0x') {
+            handle = '0x' + handle;
+        }
         const tableItem = {
-            key_type: "u64",
+            key_type: "0x1::string::String",
             value_type: `${MANAGE_ADDRESS}::sharelist::FileInfo`,
-            key: `${id}`,
+            key: `${blobId}`,
         };
-        // console.log(handle, id)
         const fileInfo = await aptos.getTableItem<IFileInfoOnChain>({handle: handle, data: tableItem});
 
         return fileInfo;
 
     }
 
-    const handlePayShareView = async (shareFile: FileOnChain) => {
+    const handlePayShareView = async (shareFile: IFileInfoOnChain) => {
+        const transaction: InputTransactionData = {
+            data: {
+                function: "0x1::aptos_account::transfer_coins",
+                typeArguments: [APTOS_COIN],
+                functionArguments: [shareFile.owner, shareFile.fee]
+            }
+        }
+
+        // sign and submit transaction to chain
+        const response = await signAndSubmitTransaction(transaction);
+        // wait for transaction
+        await aptos.waitForTransaction({transactionHash: response.hash});
+
     }
 
     return {

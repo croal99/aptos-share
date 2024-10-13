@@ -2,6 +2,9 @@ import {Box, Card, Flex, Text} from "@radix-ui/themes";
 import {WalletSelector} from "@aptos-labs/wallet-adapter-ant-design";
 
 import "@/styles/globals.css"
+import {useWallet} from "@aptos-labs/wallet-adapter-react";
+import {useNavigate} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function SignIn() {
     return (

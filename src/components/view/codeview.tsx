@@ -39,7 +39,7 @@ export default function CodeView(
                                     />
                                     <Button onClick={checkShareCode}>View</Button>
                                     <Text size="1" align={'center'}>
-                                        Version (20240914.test)
+                                        Version (20241004.test)
                                     </Text>
 
                                 </Flex>

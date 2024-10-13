@@ -1,10 +1,7 @@
 export interface FileOnStore {
     id: string;
     name: string;
-    item: {
-        handle: string;
-        id: number;
-    };
+    handle: string;
     blobId: string;
     mediaType: string;
     icon: string;

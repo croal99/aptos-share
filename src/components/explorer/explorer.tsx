@@ -12,7 +12,7 @@ import {
     Strong,
     Spinner,
     Select,
-    Grid, Radio, Badge, Code
+    Grid, Radio, Badge, Code, Blockquote
 } from "@radix-ui/themes";
 import {
     createFile,
@@ -28,7 +28,9 @@ import type {FileOnStore} from "@/types/FileOnStore.ts";
 import Detail from "@/components/explorer/detail.tsx";
 
 import {humanFileSize} from "@/utils/formatSize.ts";
-import {useShareMange} from "@/hooks/useShareMange.ts";
+import {useShareManage} from "@/hooks/useShareManage.ts";
+import {useWallet} from "@aptos-labs/wallet-adapter-react";
+import {useNavigate} from "react-router-dom";
 
 
 export default function Explorer(
@@ -50,13 +52,16 @@ export default function Explorer(
     const [currentFile, setCurrentFile] = useState<FileOnStore>({});
     const [shareDescritioin, setShareDescritioin] = useState('');
 
-    const {COIN_AMOUNT, handleAddFile} = useShareMange();
+    const {account} = useWallet();
+    const navigate = useNavigate();
+    const {COIN_AMOUNT, handleAddFile, handleGetShareFileObject} = useShareManage();
 
     const storeOnChain = async () => {
-        // return console.log('pay sui', currentFile)
+        // return console.log('storeOnChain', currentFile);
         setIsLoading(true);
 
         try {
+            // console.log('store on chain', currentFile);
             const res = await handleAddFile(
                 currentFile.name,
                 currentFile.mediaType,
@@ -68,13 +73,11 @@ export default function Explorer(
                 currentFile.code,
             )
             if (res === true) {
-                console.log('store on chain', storeManage);
-                currentFile.item.handle = storeManage.files.handle;
-                currentFile.item.id = parseInt(storeManage.file_counter);
+                currentFile.handle = storeManage.files.handle.substring(2);
                 await updateFileStore(currentFile);
                 reFetch();
 
-                showShareLink(currentFile)
+                await showShareLink(currentFile)
             } else {
                 toast.error(res);
             }
@@ -84,10 +87,10 @@ export default function Explorer(
         setIsLoading(false)
     }
 
-    const showShareLink = (fileInfo: FileOnStore) => {
-        console.log('share', fileInfo)
+    const showShareLink = async (fileInfo: FileOnStore) => {
+        // console.log('share', fileInfo, storeManage)
         let baseUrl = window.location.href.split('#')[0]
-        setShareURL(`${baseUrl}#/view/${fileInfo.item.handle}/${fileInfo.item.id}`)
+        setShareURL(`${baseUrl}#/view/${fileInfo.handle}/${fileInfo.blobId}`)
 
         switch (fileInfo.share) {
             case 0:
@@ -113,6 +116,12 @@ export default function Explorer(
         setFileList(files)
 
     }, [files]);
+
+    useEffect(() => {
+        if (!account) {
+            navigate('/login', {replace: true});
+        }
+    }, [account]);
 
     return (
         <>
@@ -235,17 +244,24 @@ export default function Explorer(
                                                 walrusFile={item}
                                             />
 
-                                            {item.item.handle !== "" ?
+                                            {item.handle == "" ?
                                                 <Button color="blue" style={{width: 75}}
                                                         onClick={() => {
                                                             // 因为是初始化文件，所以所有file的share=0
+                                                            item.share = 0;
                                                             setCurrentFile(item);
                                                             setShareType(0);
                                                             setStep(1);
                                                         }}>Protect
                                                 </Button> :
-                                                <Button color="green" style={{width: 75}}
-                                                        onClick={() => showShareLink(item)}>Link
+                                                <Button
+                                                    color="green"
+                                                    style={{width: 75}}
+                                                    onClick={() => {
+                                                        showShareLink(item)
+                                                    }}
+                                                >
+                                                    Link
                                                 </Button>}
 
                                         </Flex>
@@ -275,6 +291,9 @@ export default function Explorer(
                             When a user views the file you shared, the user will pay or unlock it according to the
                             sharing method you set.
                         </Text>
+                        <Blockquote color="crimson">
+                            Since this is a testing phase, please connect your wallet to Devnet.
+                        </Blockquote>
                         <Text size="4" weight="bold">Select share method</Text>
                         <Card>
                             <Grid columns="2" gap="3">
@@ -351,7 +370,13 @@ export default function Explorer(
                                 <Button onClick={() => {
                                     setStep(0)
                                 }}>Close</Button>
-                                <Button onClick={() => storeOnChain()} color="red" style={{width: 70}}>Pay</Button>
+                                <Button
+                                    onClick={() => storeOnChain()}
+                                    color="red"
+                                    style={{width: 70}}
+                                >
+                                    Publish
+                                </Button>
                             </Flex>
                         }
                     </Flex>
@@ -382,8 +407,8 @@ export default function Explorer(
                         {currentFile.share==2?
                             <Flex align="center" gap="3">
                                 <Text>Payment</Text>
-                                <Button>{(currentFile.fee / SUI_COIN).toString()}</Button>
-                                <Text>SUI</Text>
+                                <Button>{(currentFile.fee / COIN_AMOUNT).toString()}</Button>
+                                <Text>COIN</Text>
                             </Flex>:null
                         }
                         <Flex gap="3"></Flex>

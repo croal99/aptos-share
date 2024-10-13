@@ -1,11 +1,11 @@
 module aptos_share::sharelist {
 
     use std::signer;
-    use std::string::String;
+    use std::string::{Self, String};
     use aptos_std::table::{Self, Table};
-    // use aptos_framework::aptos_coin::{Self, AptosCoin};
+
     #[test_only]
-    use std::string;
+    use aptos_std::debug;
     #[test_only]
     use aptos_framework::account;
 
@@ -15,14 +15,12 @@ module aptos_share::sharelist {
     const ETASK_IS_COMPLETED: u64 = 3;
 
     struct FileStore has key {
-        files: Table<u64, FileInfo>,
+        files: Table<string::String, FileInfo>,
         file_counter: u64,
         owner: address,
     }
 
-    #[event]
     struct FileInfo has store, drop, copy {
-        file_id: u64,
         filename: String,
         media: String,
         hash: String,
@@ -54,7 +52,6 @@ module aptos_share::sharelist {
 
     public entry fun add_file(
         account: &signer,
-        // store_address: address,
         filename: String,
         media: String,
         hash: String, // password 1
@@ -70,29 +67,42 @@ module aptos_share::sharelist {
         assert!(exists<FileStore>(signer_address), E_NOT_INITIALIZED);
         // gets the resource
         let fileStore = borrow_global_mut<FileStore>(signer_address);
-        // increment counter
-        let counter = fileStore.file_counter + 1;
 
-        // creates a new info
-        let new_fileInfo = FileInfo {
-            file_id: counter,
-            owner: signer_address,
-            filename,
-            media,
-            hash,
-            salt,
-            blobId,
-            share, // 0-free 1-code 2-sui
-            fee,
-            code,
+        if (table::contains(&fileStore.files, blobId)) {
+            // debug::print(&string::utf8(b"contains"));
+            let fileInfo = table::borrow_mut(&mut fileStore.files, blobId);
+
+            // debug::print(&fileInfo.blobId);
+            fileInfo.salt = salt;
+            fileInfo.hash = hash;
+            fileInfo.share = share;
+            fileInfo.fee = fee;
+            fileInfo.code = code;
+
+        } else {
+            // increment counter
+            let counter = fileStore.file_counter + 1;
+
+            // creates a new info
+            let new_fileInfo = FileInfo {
+                owner: signer_address,
+                filename,
+                media,
+                hash,
+                salt,
+                blobId,
+                share, // 0-free 1-code 2-sui
+                fee,
+                code,
+            };
+            // adds the new task into the tasks table
+            table::upsert(&mut fileStore.files, blobId, new_fileInfo);
+            // sets the task counter to be the incremented counter
+            fileStore.file_counter = counter;
+
         };
-        // adds the new task into the tasks table
-        table::upsert(&mut fileStore.files, counter, new_fileInfo);
-        // sets the task counter to be the incremented counter
-        fileStore.file_counter = counter;
 
-        // const coinTypeToTransfer = APTOS_COIN;
-        // transfer<AptosCoin>()
+
     }
 
 
@@ -101,6 +111,7 @@ module aptos_share::sharelist {
         // creates an admin @todolist_addr account for test
         account::create_account_for_test(signer::address_of(&admin));
         // initialize contract with admin account
+        debug::print(&string::utf8(b"create_store"));
         create_store(&admin);
 
         add_file(
@@ -109,7 +120,7 @@ module aptos_share::sharelist {
             string::utf8(b"media"),
             string::utf8(b"hash"),
             string::utf8(b"salt"),
-            string::utf8(b"blobId"),
+            string::utf8(b"blobId1"),
             0, // 0-free 1-code 2-sui
             1_000,
             string::utf8(b"code"),
@@ -121,8 +132,20 @@ module aptos_share::sharelist {
             string::utf8(b"media"),
             string::utf8(b"hash"),
             string::utf8(b"salt"),
-            string::utf8(b"blobId"),
+            string::utf8(b"blobId2"),
             0, // 0-free 1-code 2-sui
+            1_000,
+            string::utf8(b"code"),
+        );
+
+        add_file(
+            &admin,
+            string::utf8(b"filename2"),
+            string::utf8(b"media"),
+            string::utf8(b"hash"),
+            string::utf8(b"salt"),
+            string::utf8(b"blobId2"),
+            1, // 0-free 1-code 2-sui
             1_000,
             string::utf8(b"code"),
         );
@@ -130,7 +153,10 @@ module aptos_share::sharelist {
         let fileStore = borrow_global<FileStore>(signer::address_of(&admin));
         assert!(fileStore.file_counter == 2, 5);
 
-        let fileInfo = table::borrow(&fileStore.files, 1);
-        assert!(fileInfo.file_id == 1, 6);
+        let fileInfo = table::borrow(&fileStore.files, string::utf8(b"blobId2"));
+        assert!(fileInfo.share == 1, 6);
+
+        fileInfo = table::borrow(&fileStore.files, string::utf8(b"blobId1"));
+        assert!(fileInfo.share == 0, 6);
     }
 }

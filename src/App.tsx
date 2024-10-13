@@ -6,14 +6,14 @@ import {getChildFiles, getFilesByType, removeFileStore} from "@/hooks/useFileSto
 import Explorer from "@/components/explorer/explorer.tsx";
 import {getCurrentFolder} from "@/hooks/useFolderStore.ts";
 import UploadFile from "@/components/explorer/uploadFile.tsx";
-import {useShareMange} from "@/hooks/useShareMange.ts";
+import {useShareManage} from "@/hooks/useShareManage.ts";
 import {useWallet} from "@aptos-labs/wallet-adapter-react";
 import {IStoreOnChain} from "@/types/FileOnChain.ts";
 
 export default function App() {
     const {account} = useWallet();
     // console.log('app address', account?.address)
-    const {handleGetManger, handleCreateManager, handleGetShareFileObject} = useShareMange();
+    const {handleGetManger, handleCreateManager, handleGetShareFileObject} = useShareManage();
 
     const [isSignIn, setIsSignIn] = useState(false);
     const [uploadStep, setUploadStep] = useState(0);
@@ -44,7 +44,7 @@ export default function App() {
     }
 
     const fetchData = async () => {
-        console.log('fetch data');
+        // console.log('fetch data');
         const path = await getCurrentFolder("");
         await fetchFiles("0")
         setRoot(path)
