@@ -1,6 +1,7 @@
 import {Box, Button, Card, Flex, Text, TextField} from "@radix-ui/themes";
 import React, {useState} from "react";
 import PreViewImage from "@/components/view/previewimage.tsx";
+import {toast, Toaster} from "react-hot-toast";
 
 export default function CodeView(
     {
@@ -11,13 +12,16 @@ export default function CodeView(
 
     const checkShareCode = async () => {
         if (shareCode == shareFile.code) {
-            console.log('confirm')
+            // console.log('confirm')
             setIsConfirm(true)
             // await handleDownload(shareFile, true)
+        } else {
+            toast.error('error code')
         }
     }
     return (
         <>
+            <Toaster />
             {!isConfirm ?
                 <div className="back-ground h-screen">
                     <Box className="login-container">

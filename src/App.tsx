@@ -77,7 +77,15 @@ export default function App() {
                             uploadStep={uploadStep}
                         />
                         :
-                        <Button onClick={handleCreateManager}>Init Store</Button>
+                        <Button
+                            onClick={async ()=>{
+                                await handleCreateManager();
+                                const manager = await handleGetManger()
+                                setFileStore(manager);
+                            }}
+                        >
+                            Init contract
+                        </Button>
                     }
 
                 </Flex>

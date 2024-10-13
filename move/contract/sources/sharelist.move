@@ -23,14 +23,10 @@ module aptos_share::sharelist {
     struct FileInfo has store, drop, copy {
         filename: String,
         media: String,
-        hash: String,
-        // password 1
-        salt: String,
-        // password 2
-        blobId: String,
-        // walrus blobId
-        share: u64,
-        // share type 0-free 1-code 2-sui
+        hash: String, // password part 1
+        salt: String, // password part 2
+        blobId: String, // walrus blobId
+        share: u64, // share type 0-free 1-code 2-sui
         fee: u64,
         code: String,
         owner: address,
@@ -54,8 +50,8 @@ module aptos_share::sharelist {
         account: &signer,
         filename: String,
         media: String,
-        hash: String, // password 1
-        salt: String, // password 2
+        hash: String, // password part 1
+        salt: String, // password part 2
         blobId: String, // walrus blobId
         share: u64, // share type 0-free 1-code 2-sui
         fee: u64,
