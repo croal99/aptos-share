@@ -46,7 +46,7 @@ export default function PayView(
                                         view the pictures.
                                     </Text>
                                     <Blockquote color="crimson">
-                                        Since this is a testing phase, please connect your wallet to Devnet.
+                                        Since this is a testing phase, please connect your wallet to <Badge variant="solid" color="orange" size="3">Testnet</Badge>
                                     </Blockquote>
 
                                     <WalletSelector/>

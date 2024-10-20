@@ -278,7 +278,7 @@ export default function Explorer(
             </Flex>
 
             <Dialog.Root open={step == 1}>
-                <Dialog.Content maxWidth="500px">
+                <Dialog.Content maxWidth="560px">
                     <Dialog.Title>Protect file with Aptos Share Contract</Dialog.Title>
                     <Dialog.Description>
                     </Dialog.Description>
@@ -292,7 +292,7 @@ export default function Explorer(
                             sharing method you set.
                         </Text>
                         <Blockquote color="crimson">
-                            Since this is a testing phase, please connect your wallet to Devnet.
+                            Since this is a testing phase, please connect your wallet to <Badge variant="solid" color="orange" size="3">Testnet</Badge>
                         </Blockquote>
                         <Text size="4" weight="bold">Select share method</Text>
                         <Card>

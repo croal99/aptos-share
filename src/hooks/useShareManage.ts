@@ -3,7 +3,7 @@ import {Aptos, APTOS_COIN, AptosConfig} from "@aptos-labs/ts-sdk";
 import {InputTransactionData, useWallet} from "@aptos-labs/wallet-adapter-react";
 
 // Setup the client
-const config = new AptosConfig({network: "devnet"});
+const config = new AptosConfig({network: "testnet"});
 const aptos = new Aptos(config);
 
 export const useShareManage = () => {
