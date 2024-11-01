@@ -48,8 +48,6 @@ export default function App() {
         const path = await getCurrentFolder("");
         await fetchFiles("0")
         setRoot(path)
-        const manager = await handleGetManger()
-        setFileStore(manager);
     };
 
     useEffect(() => {
@@ -70,27 +68,13 @@ export default function App() {
         <>
             <Flex direction="column" gap="3">
                 <Flex gap="3">
-                    {fileStore ?
-                        <UploadFile
-                            root={root}
-                            reFetchDir={fetchData}
-                            uploadStep={uploadStep}
-                        />
-                        :
-                        <Button
-                            onClick={async ()=>{
-                                await handleCreateManager();
-                                const manager = await handleGetManger()
-                                setFileStore(manager);
-                            }}
-                        >
-                            Init contract
-                        </Button>
-                    }
-
+                    <UploadFile
+                        root={root}
+                        reFetchDir={fetchData}
+                        uploadStep={uploadStep}
+                    />
                 </Flex>
                 <Explorer
-                    storeManage={fileStore}
                     folders={folderList}
                     files={fileList}
                     removeFolder={removeFolder}

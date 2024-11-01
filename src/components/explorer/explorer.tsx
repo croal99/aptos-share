@@ -35,7 +35,6 @@ import {useNavigate} from "react-router-dom";
 
 export default function Explorer(
     {
-        storeManage,
         folders,
         files,
         removeFolder,
@@ -54,7 +53,7 @@ export default function Explorer(
 
     const {account} = useWallet();
     const navigate = useNavigate();
-    const {COIN_AMOUNT, handleAddFile, handleGetShareFileObject} = useShareManage();
+    const {COIN_AMOUNT, handleAddFile, handleGetManger} = useShareManage();
 
     const storeOnChain = async () => {
         // return console.log('storeOnChain', currentFile);
@@ -73,7 +72,8 @@ export default function Explorer(
                 currentFile.code,
             )
             if (res === true) {
-                currentFile.handle = storeManage.files.handle.substring(2);
+                const manager = await handleGetManger();
+                currentFile.handle = manager.files.handle.substring(2);
                 await updateFileStore(currentFile);
                 reFetch();
 
@@ -278,7 +278,7 @@ export default function Explorer(
             </Flex>
 
             <Dialog.Root open={step == 1}>
-                <Dialog.Content maxWidth="560px">
+                <Dialog.Content maxWidth="500px">
                     <Dialog.Title>Protect file with Aptos Share Contract</Dialog.Title>
                     <Dialog.Description>
                     </Dialog.Description>
@@ -291,9 +291,9 @@ export default function Explorer(
                             When a user views the file you shared, the user will pay or unlock it according to the
                             sharing method you set.
                         </Text>
-                        <Blockquote color="crimson">
-                            Since this is a testing phase, please connect your wallet to <Badge variant="solid" color="orange" size="3">Testnet</Badge>
-                        </Blockquote>
+                        <Text weight="bold" color="orange">
+                            Since this is a testing phase, please switch your Network to Testnet!
+                        </Text>
                         <Text size="4" weight="bold">Select share method</Text>
                         <Card>
                             <Grid columns="2" gap="3">

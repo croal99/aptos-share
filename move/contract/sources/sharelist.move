@@ -1,13 +1,12 @@
 module aptos_share::sharelist {
-
+    use aptos_framework::event;
     use std::signer;
     use std::string::{Self, String};
     use aptos_std::table::{Self, Table};
+    use aptos_framework::account;
 
     #[test_only]
     use aptos_std::debug;
-    #[test_only]
-    use aptos_framework::account;
 
     // Errors
     const E_NOT_INITIALIZED: u64 = 1;
@@ -17,6 +16,7 @@ module aptos_share::sharelist {
     struct FileStore has key {
         files: Table<string::String, FileInfo>,
         file_counter: u64,
+        set_event: event::EventHandle<FileInfo>,
         owner: address,
     }
 
@@ -38,6 +38,7 @@ module aptos_share::sharelist {
         let fileStore = FileStore {
             files: table::new(),
             file_counter: 0,
+            set_event: account::new_event_handle<FileInfo>(manager),
             owner: signer_address,
         };
 
@@ -60,7 +61,12 @@ module aptos_share::sharelist {
         // gets the signer address
         let signer_address = signer::address_of(account);
         // assert signer has created a list
-        assert!(exists<FileStore>(signer_address), E_NOT_INITIALIZED);
+        // assert!(exists<FileStore>(signer_address), E_NOT_INITIALIZED);
+
+        if (!exists<FileStore>(signer_address)) {
+            create_store(account)
+        };
+
         // gets the resource
         let fileStore = borrow_global_mut<FileStore>(signer_address);
 
@@ -69,6 +75,7 @@ module aptos_share::sharelist {
             let fileInfo = table::borrow_mut(&mut fileStore.files, blobId);
 
             // debug::print(&fileInfo.blobId);
+            fileInfo.filename = filename;
             fileInfo.salt = salt;
             fileInfo.hash = hash;
             fileInfo.share = share;
@@ -96,9 +103,13 @@ module aptos_share::sharelist {
             // sets the task counter to be the incremented counter
             fileStore.file_counter = counter;
 
+            // fires a new task created event
+            event::emit_event<FileInfo>(
+                &mut borrow_global_mut<FileStore>(signer_address).set_event,
+                new_fileInfo
+            );
+
         };
-
-
     }
 
 
@@ -107,8 +118,8 @@ module aptos_share::sharelist {
         // creates an admin @todolist_addr account for test
         account::create_account_for_test(signer::address_of(&admin));
         // initialize contract with admin account
-        debug::print(&string::utf8(b"create_store"));
-        create_store(&admin);
+        // debug::print(&string::utf8(b"create_store"));
+        // create_store(&admin);
 
         add_file(
             &admin,
@@ -151,8 +162,10 @@ module aptos_share::sharelist {
 
         let fileInfo = table::borrow(&fileStore.files, string::utf8(b"blobId2"));
         assert!(fileInfo.share == 1, 6);
+        debug::print(&fileInfo.filename);
 
         fileInfo = table::borrow(&fileStore.files, string::utf8(b"blobId1"));
         assert!(fileInfo.share == 0, 6);
+        debug::print(&fileInfo.filename);
     }
 }
