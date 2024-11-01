@@ -4,6 +4,8 @@ import PreViewImage from "@/components/view/previewimage.tsx";
 import {useShareManage} from "@/hooks/useShareManage.ts";
 import {WalletSelector} from "@aptos-labs/wallet-adapter-ant-design";
 import {useWallet} from "@aptos-labs/wallet-adapter-react";
+import {ConnectButton} from "@mysten/dapp-kit";
+
 
 export default function PayView(
     {
@@ -42,14 +44,18 @@ export default function PayView(
                                     </Text>
                                     <Text>
                                         In order to support the author in sharing his wonderful works, please
-                                        pay <Badge variant="solid" color="orange" size="3">{(shareFile.fee / COIN_AMOUNT).toString()} COIN</Badge> to
+                                        pay <Badge variant="solid" color="orange"
+                                                   size="3">{(shareFile.fee / COIN_AMOUNT).toString()}</Badge> COIN to
                                         view the pictures.
                                     </Text>
-                                    <Blockquote color="crimson">
-                                        Since this is a testing phase, please connect your wallet to <Badge variant="solid" color="orange" size="3">Testnet</Badge>
-                                    </Blockquote>
+                                    <Text weight="bold" color="orange">
+                                        Since this is a testing phase, please switch your Network to Testnet!
+                                    </Text>
 
-                                    <WalletSelector/>
+                                    <Flex style={{backgroundColor: "green", borderRadius: "var(--radius-3)"}} >
+                                        <img src="/images/aptos.svg" alt="" style={{height: '50px'}}/> Aptos<WalletSelector/>
+                                    </Flex>
+                                    <ConnectButton/>
                                     {account ?
                                         <>
                                             {isLoading ?

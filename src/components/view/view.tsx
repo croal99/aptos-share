@@ -11,9 +11,6 @@ import PreViewImage from "@/components/view/previewimage.tsx";
 import CodeView from "@/components/view/codeview.tsx";
 import PayView from "@/components/view/payview.tsx";
 
-// import PayView from "@/components/view/payview.tsx";
-
-
 export async function loader({params}) {
     const handle = params.handle;
     const id = params.id;

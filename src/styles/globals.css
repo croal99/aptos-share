@@ -23,7 +23,7 @@
 }
 
 .login-form {
-  width: 450px;
+  width: 500px;
   /*background-color: white;*/
   background: var(--gray-a4);
   /*background: color(display-p3 1 0.77 0.26);*/
@@ -47,7 +47,8 @@
 }
 
 .preview-form {
-  width: 450px;
-  /*background-color: white;*/
-  background: var(--gray-a1);
+  width: 500px;
+  /*background-color: green;*/
+  /*background: var(--gray-a1);*/
+  /*background: green;*/
 }
