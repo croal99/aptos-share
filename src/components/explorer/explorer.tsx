@@ -91,6 +91,7 @@ export default function Explorer(
         // console.log('share', fileInfo, storeManage)
         let baseUrl = window.location.href.split('#')[0]
         setShareURL(`${baseUrl}#/view/${fileInfo.handle}/${fileInfo.blobId}`)
+        // setShareURL(`${baseUrl}view/${fileInfo.handle}/${fileInfo.blobId}`)
 
         switch (fileInfo.share) {
             case 0:

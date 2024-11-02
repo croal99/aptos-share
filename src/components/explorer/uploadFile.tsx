@@ -46,7 +46,7 @@ export default function UploadFile(
         }
 
         setUploadProgress(0);
-        setIsWarning(setting.publisher === "https://publisher-devnet.walrus.space");
+        // setIsWarning(setting.publisher === "https://publisher.walrus-testnet.walrus.space");
 
         const blob = await readfile(file).catch(function (err) {
             console.error(err);
@@ -119,7 +119,7 @@ export default function UploadFile(
 
         // 准备上传
         setStep(2);
-        const publisherUrl = `${setting.publisher}/v1/store?epochs=1`;
+        const publisherUrl = `https://publisher.walrus-testnet.walrus.space/v1/store?epochs=1`;
         const config = {
             headers: {
                 'content-type': 'multipart/form-data',

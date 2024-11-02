@@ -1,19 +1,18 @@
 import React, {useEffect, useState} from "react";
 import {Box, Button, Flex, Grid, Heading, Spinner} from "@radix-ui/themes";
 import {ConnectButton} from "@mysten/dapp-kit";
-import {FileOnChain} from "@/types/FileOnChain.ts";
+import {FileOnChain, IFileInfoOnChain} from "@/types/FileOnChain.ts";
 
 import axios from "axios";
 import {Link} from "react-router-dom";
+import {toast} from "react-hot-toast";
 
-export default function PreViewImage(
-    {
-        shareFile,
-    }) {
+export default function PreViewImage({shareFile}: { shareFile: IFileInfoOnChain }) {
     const [isDownload, setIsDownload] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
 
-    const aggregatorURL = "https://aggregator-devnet.walrus.space"
+    // const aggregatorURL = "https://aggregator-devnet.walrus.space"
+    const aggregatorURL = "https://aggregator.walrus-testnet.walrus.space"
 
     const handleDownload = async (walrusFile: FileOnChain, view: boolean) => {
         // return console.log('download', walrusFile, view);
@@ -22,7 +21,7 @@ export default function PreViewImage(
         }
 
         setIsDownload(true);
-        await new Promise((r) => setTimeout(r, 5000)); // fake delay
+        // await new Promise((r) => setTimeout(r, 5000)); // fake delay
 
         const txUrl = `${aggregatorURL}/v1/${walrusFile.blobId}`;
         axios.get(txUrl, {responseType: 'arraybuffer'}).then(async (res) => {
@@ -108,8 +107,7 @@ export default function PreViewImage(
             setIsDownload(false);
         }).catch(error => {
             console.log('store error', error)
-            setMessage('Please check your network configuration and make sure the Walrus service address is correct.');
-            setIsError(true)
+            toast.error('Please check your network configuration and make sure the Walrus service address is correct.');
             setIsDownload(false);
         })
     }
@@ -129,38 +127,22 @@ export default function PreViewImage(
 
     return (
         <>
-            <div className="back-ground h-screen">
-                <Flex direction="column" gap="4" p="4">
-                    <Box>
-                        <Grid columns="2" align="center">
-                            <Heading><Link to="/" style={{textDecoration: 'none'}}><img src="/images/logo.png" alt=""
-                                                                                        style={{height: '50px'}}/></Link></Heading>
-                            <Flex justify="end" className="header">
-                            </Flex>
-                        </Grid>
-                    </Box>
+            <Flex className="preview-container" gap="4">
 
-                    <Flex>
-                    </Flex>
-
-                    <Flex className="preview-container" gap="4">
-
-                        {isDownload ?
-                            <Button>
-                                <Spinner loading={isDownload}></Spinner> Loading...
-                            </Button> :
-                            <>
-                                <Button disabled={isDownload} onClick={() => handleDownload(shareFile, false)}>
-                                    <Spinner loading={isDownload}></Spinner> Download
-                                </Button>
-                                <Flex justify="center">
-                                    <img src={imageUrl} alt="" style={{maxHeight: '70vh'}}/>
-                                </Flex>
-                            </>
-                        }
-                    </Flex>
-                </Flex>
-            </div>
+                {isDownload ?
+                    <Button>
+                        <Spinner loading={isDownload}></Spinner> Loading...
+                    </Button> :
+                    <>
+                        <Button disabled={isDownload} onClick={() => handleDownload(shareFile, false)}>
+                            <Spinner loading={isDownload}></Spinner> Download
+                        </Button>
+                        <Flex justify="center">
+                            <img src={imageUrl} alt="" style={{maxHeight: '70vh'}}/>
+                        </Flex>
+                    </>
+                }
+            </Flex>
         </>
     )
 }

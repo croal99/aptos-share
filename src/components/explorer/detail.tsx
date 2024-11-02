@@ -1,7 +1,6 @@
 import {Button, Dialog, Flex, IconButton, Spinner, Strong, Text} from "@radix-ui/themes";
 import React, {useEffect, useState} from "react";
 import dayjs from "dayjs";
-import {FileOnStore} from "@/types/FileOnStore.ts";
 import {getSetting} from "@/hooks/useLocalStore.ts";
 import axios from "axios";
 import BlobImage from "@/components/explorer/blobImage.tsx";
@@ -20,7 +19,7 @@ export default function Detail({walrusFile}) {
         setIsDownload(true);
         // await new Promise((r) => setTimeout(r, 500)); // fake delay
 
-        const txUrl = `${setting.aggregator}/v1/${walrusFile.blobId}`;
+        const txUrl = `https://aggregator.walrus-testnet.walrus.space/v1/${walrusFile.blobId}`;
         axios.get(txUrl, { responseType: 'arraybuffer' }).then(async (res) => {
             let cipherbytes = new Uint8Array(res.data);
 
