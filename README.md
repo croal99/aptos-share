@@ -18,6 +18,8 @@ After the smart contract deployed on Aptos detects the native tokens transferred
 
 [Demo Web Site](https://5x4f13lfxpc6i3p0sy6limudv4b1ciqg4vja0h1qea59yst35.walrus.site)
 
+![wormhole.png](doc/wormhole.png)
+
 ## Login with wallet
 
 You need to use a wallet to log in to the system. Please select the wallet application you usually use.
