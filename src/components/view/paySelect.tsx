@@ -9,6 +9,7 @@ import {createNetworkConfig, SuiClientProvider, WalletProvider} from '@mysten/da
 import {getFullnodeUrl} from '@mysten/sui/client';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {darkTheme} from "@/styles/mytheme.ts";
+import '@mysten/dapp-kit/dist/index.css';
 
 
 import PaySui from "@/components/view/paySui.tsx";
@@ -20,12 +21,12 @@ import {useShareManage} from "@/hooks/useShareManage.ts";
 const wallets = [new PetraWallet()];
 
 // Sui Wallet
-// const {networkConfig} = createNetworkConfig({
-//     localnet: {url: getFullnodeUrl('localnet')},
-//     testnet: {url: getFullnodeUrl('testnet')},
-//     mainnet: {url: getFullnodeUrl('mainnet')},
-// });
-// const queryClient = new QueryClient();
+const {networkConfig} = createNetworkConfig({
+    localnet: {url: getFullnodeUrl('localnet')},
+    testnet: {url: getFullnodeUrl('testnet')},
+    mainnet: {url: getFullnodeUrl('mainnet')},
+});
+const queryClient = new QueryClient();
 
 export default function PaySelect({shareFile}: { shareFile: IFileInfoOnChain }) {
     const [payType, setPayType] = useState(0);
@@ -85,20 +86,20 @@ export default function PaySelect({shareFile}: { shareFile: IFileInfoOnChain }) 
                             }
 
                             {payType === 2 ?
-                                // <QueryClientProvider client={queryClient}>
-                                //     <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
-                                //         <WalletProvider theme={darkTheme}>
-                                //         </WalletProvider>
-                                //     </SuiClientProvider>
-                                // </QueryClientProvider>
-                                <></>
+                                <QueryClientProvider client={queryClient}>
+                                    <SuiClientProvider networks={networkConfig} defaultNetwork="testnet">
+                                        <WalletProvider theme={darkTheme}>
+                                            <PaySui
+                                                shareFile={shareFile}
+                                                setIsConfirm={setIsConfirm}
+                                            />
+                                        </WalletProvider>
+                                    </SuiClientProvider>
+                                </QueryClientProvider>
                                 :
                                 null
                             }
-                            <PaySui
-                                shareFile={shareFile}
-                                setIsConfirm={setIsConfirm}
-                            />
+
 
                             <Text size="1" align={'center'}>
                                 Version (20241004.test)

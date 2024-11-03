@@ -116,7 +116,8 @@ export default function PaySui({shareFile, setIsConfirm}) {
 
         await handlePaySui(shareFile);
 
-        // await payWormhole();
+        await payWormhole();
+
         try {
 
             setIsConfirm(true)
@@ -130,9 +131,6 @@ export default function PaySui({shareFile, setIsConfirm}) {
     return (
         <>
             <ConnectButton/>
-            <Button onClick={pay4View}>
-                Pay for view
-            </Button>
             {account ?
                 isLoading ?
                     <Button>
