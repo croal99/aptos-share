@@ -16,7 +16,7 @@ Sui users can use the Wormhole protocol to transfer native tokens to Aptos.
 
 After the smart contract deployed on Aptos detects the native tokens transferred by Sui users, it can provide services to Sui users.
 
-[Demo Web Site](https://4mxkzizfxcdbtz6vghb6usaqr9sxedv9uxxnevpzz6c997y67.walrus.site)
+[Demo Web Site](https://5x4f13lfxpc6i3p0sy6limudv4b1ciqg4vja0h1qea59yst35.walrus.site)
 
 ## Login with wallet
 
