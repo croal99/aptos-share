@@ -18,7 +18,7 @@ export default function PaySui({shareFile, setIsConfirm}) {
 
     const handlePaySui = async (shareFile : IFileInfoOnChain) => {
         const receiverAddress = getEnv("RECEIVER_SUI_ADDRESS");
-        console.log('receiverAddress', receiverAddress);
+        // console.log('receiverAddress', receiverAddress);
         const tb = new Transaction();
         tb.setSender(account?.address);
         const payment = tb.splitCoins(tb.gas, [shareFile.fee]);
@@ -45,24 +45,19 @@ export default function PaySui({shareFile, setIsConfirm}) {
             aptos,
             sui,
         ]);
-        console.log(wh);
 
         const ctx = wh.getChain('Aptos');
         const rcv = wh.getChain('Sui');
 
         const sender = await getSigner(ctx);
-        console.log('sender', sender.address);
 
         const receiver = await getSigner(rcv);
-        console.log('receiver', receiver);
 
         // Get a Token Bridge contract client on the source
         const sndTb = await ctx.getTokenBridge();
-        console.log('snbTb', sndTb);
 
         // Send the native token of the source chain
         const tokenId = Wormhole.tokenId(ctx.chain, 'native');
-        console.log('tokenId', tokenId);
 
         // Bigint amount using `amount` module
         const amt = amount.units(amount.parse('0.1', ctx.config.nativeTokenDecimals));
@@ -74,15 +69,12 @@ export default function PaySui({shareFile, setIsConfirm}) {
             tokenId.address,
             amt
         );
-        console.log('transfer', transfer);
 
         // Sign and send the transaction
         const txids = await signSendWait(ctx, transfer, sender.signer);
-        console.log('Sent: ', txids);
 
         // Get the Wormhole message ID from the transaction
         const [whm] = await ctx.parseTransaction(txids[txids.length - 1]!.txid);
-        console.log('Wormhole Messages: ', whm);
 
         const vaa = await wh.getVaa(
             // Wormhole Message ID
@@ -101,12 +93,10 @@ export default function PaySui({shareFile, setIsConfirm}) {
 
         // Sign and send the transaction
         const rcvTxids = await signSendWait(rcv, redeem, receiver.signer);
-        console.log('Sent: ', rcvTxids);
 
         // Now check if the transfer is completed according to
         // the destination token bridge
         const finished = await rcvTb.isTransferCompleted(vaa!);
-        console.log('Transfer completed: ', finished);
     }
 
     const pay4View = async () => {

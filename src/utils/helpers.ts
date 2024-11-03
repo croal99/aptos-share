@@ -65,6 +65,6 @@ export async function getSigner<N extends Network, C extends Chain>(
 export function getEnv(key: string): string {
     const env = import.meta.env;
     const val = env['VITE_' + key];
-    console.log('load', key, val);
+    // console.log('load', key, val);
     return val;
 }

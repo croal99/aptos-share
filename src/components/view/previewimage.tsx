@@ -13,6 +13,7 @@ export default function PreViewImage({shareFile}: { shareFile: IFileInfoOnChain 
 
     // const aggregatorURL = "https://aggregator-devnet.walrus.space"
     const aggregatorURL = "https://aggregator.walrus-testnet.walrus.space"
+    // const aggregatorURL = "https://walrus-testnet.blockscope.net"
 
     const handleDownload = async (walrusFile: FileOnChain, view: boolean) => {
         // return console.log('download', walrusFile, view);
