@@ -116,7 +116,7 @@ export default function Home() {
                             </Text>
 
                             <Text size="1" mb="1" align={'center'}>
-                                Version (20241101.test)
+                                Version (20241104.1.test)
                             </Text>
 
                             <WalletSelector/>

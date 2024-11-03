@@ -99,7 +99,7 @@ export default function PaySelect({shareFile}: { shareFile: IFileInfoOnChain }) 
 
 
                             <Text size="1" align={'center'}>
-                                Version (20241104.test)
+                                Version (20241104.1.test)
                             </Text>
 
                         </Flex>
