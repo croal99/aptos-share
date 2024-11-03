@@ -43,9 +43,6 @@ export default function PaySelect({shareFile}: { shareFile: IFileInfoOnChain }) 
                 <Flex direction="column" gap="3" align="center" justify="center">
                     <Card style={{width: '500px'}}>
                         <Flex direction="column" gap="3">
-                            <Text as="div" weight="bold" size="3" mb="1" align={'center'}>
-                                <img src="/images/logo.png" alt="" style={{height: '50px'}}/>
-                            </Text>
                             <Text>
                                 In order to support the author in sharing his wonderful works, please
                                 pay <Badge variant="solid" color="orange" size="3">{(shareFile.fee / COIN_AMOUNT).toString()}</Badge> COIN to
@@ -102,7 +99,7 @@ export default function PaySelect({shareFile}: { shareFile: IFileInfoOnChain }) 
 
 
                             <Text size="1" align={'center'}>
-                                Version (20241004.test)
+                                Version (20241104.test)
                             </Text>
 
                         </Flex>

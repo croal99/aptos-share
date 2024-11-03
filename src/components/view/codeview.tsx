@@ -21,40 +21,32 @@ export default function CodeView(
     }
     return (
         <>
-            <Toaster />
-            {!isConfirm ?
-                <div className="back-ground h-screen">
-                    <Box className="login-container">
-                        <Flex direction="column" gap="3">
-                            <Card className="preview-form">
-                                <Flex direction="column" gap="3">
-                                    <Text as="div" weight="bold" size="3" mb="1" align={'center'}>
-                                        <img src="/images/logo.png" alt="" style={{height: '50px'}}/>
-                                    </Text>
-                                    <Text>
-                                        In order to support the author in sharing his wonderful works, please
-                                        enter the share code to view the pictures.
-                                    </Text>
-                                    <TextField.Root
-                                        style={{width: "100%"}}
-                                        onChange={event => {
-                                            setShareCode(event.target.value)
-                                        }}
-                                    />
-                                    <Button onClick={checkShareCode}>View</Button>
-                                    <Text size="1" align={'center'}>
-                                        Version (20241004.test)
-                                    </Text>
-
-                                </Flex>
-                            </Card>
-                        </Flex>
-                    </Box>
-                </div>
-                :
+            {isConfirm ?
                 <PreViewImage
                     shareFile={shareFile}
                 />
+                :
+                <Flex direction="column" gap="3" align="center" justify="center">
+                    <Card style={{width: '500px'}}>
+                        <Flex direction="column" gap="3">
+                            <Text>
+                                In order to support the author in sharing his wonderful works, please
+                                enter the share code to view the pictures.
+                            </Text>
+                            <TextField.Root
+                                style={{width: "100%"}}
+                                onChange={event => {
+                                    setShareCode(event.target.value)
+                                }}
+                            />
+                            <Button onClick={checkShareCode}>View</Button>
+                            <Text size="1" align={'center'}>
+                                Version (20241104.test)
+                            </Text>
+
+                        </Flex>
+                    </Card>
+                </Flex>
             }
         </>
     )

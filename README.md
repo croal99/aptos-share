@@ -1,10 +1,20 @@
 # Aptos Share
 
-Aptos Share is a file sharing Dapp developed based on the Aptos contract. It publishes file sharing information through contracts. It provides decentralized storage and data availability through the Walrus protocol.
+Aptos Share is a file sharing Dapp developed based on the Aptos contract. 
+
+It publishes file sharing information through contracts. It provides decentralized storage and data availability through the Walrus protocol.
 
 Aptos Share app can not only provide Walrus-based distributed storage, but also verify the sharing permissions of files.
 
 This ensures that the original file owner can gain benefits from file sharing.
+
+We implemented the native token transfer from Sui to Aptos using the Wormhole protocol.
+
+Although the Aptos Share application is deployed on the Aptos blockchain, we use the characteristics of Wormhole to connect Aptos and Sui.
+
+Sui users can use the Wormhole protocol to transfer native tokens to Aptos.
+
+After the smart contract deployed on Aptos detects the native tokens transferred by Sui users, it can provide services to Sui users.
 
 [Demo Web Site](https://4mxkzizfxcdbtz6vghb6usaqr9sxedv9uxxnevpzz6c997y67.walrus.site)
 

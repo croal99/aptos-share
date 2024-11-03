@@ -7,7 +7,6 @@ import {Box, Button, Dialog, Flex, Grid, Heading, Spinner} from "@radix-ui/theme
 
 import PreViewImage from "@/components/view/previewimage.tsx";
 import CodeView from "@/components/view/codeview.tsx";
-import PayAptos from "@/components/view/payAptos.tsx";
 import PaySelect from "@/components/view/paySelect.tsx";
 import {Toaster} from "react-hot-toast";
 
@@ -38,29 +37,6 @@ export default function View() {
         }
     }, []);
 
-    // switch (shareFile.share) {
-    //     case 0:
-    //         return (
-    //             <PreViewImage
-    //                 shareFile={shareFile}
-    //             />
-    //         )
-    //
-    //     case 1:
-    //         return (
-    //             <CodeView
-    //                 shareFile={shareFile}
-    //             />
-    //         )
-    //
-    //     case 2:
-    //         return (
-    //             <PaySelect
-    //                 shareFile={shareFile}
-    //             />
-    //         )
-    // }
-
 
     return (
         <>
@@ -83,7 +59,16 @@ export default function View() {
 
                     {
                         shareFile?.share === 0 ?
-                        <PreViewImage
+                            <PreViewImage
+                                shareFile={shareFile}
+                            />
+                            :
+                            null
+                    }
+
+                    {
+                        shareFile?.share === 1 ?
+                        <CodeView
                             shareFile={shareFile}
                         />
                         :
